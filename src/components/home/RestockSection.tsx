@@ -7,24 +7,10 @@ import { WaitlistModal } from "@/components/waitlist/WaitlistModal";
 
 export function RestockSection() {
   const [isOpen, setIsOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
-
-  const handleSubmit = async (email: string) => {
-    setSubmitting(true);
-    setMessage(null);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setMessage({ type: "success", text: "Bestätigungs-E-Mail gesendet!" });
-    } catch {
-      setMessage({ type: "error", text: "Etwas ist schiefgelaufen." });
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <section className="py-20 px-6 bg-cocoa relative overflow-hidden">
@@ -74,8 +60,6 @@ export function RestockSection() {
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             productSlug="cozy-pants-01"
-            onSubmit={handleSubmit}
-            isSubmitting={submitting}
             message={message}
           />
         )}

@@ -9,28 +9,14 @@ import { WaitlistModal } from "@/components/waitlist/WaitlistModal";
 
 export function ProductSection() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
 
-  const handleNotify = async (slug: string) => {
+  const handleNotify = (slug: string) => {
     setOpenSlug(slug);
-  };
-
-  const handleSubmit = async (email: string) => {
-    setSubmitting(true);
     setMessage(null);
-    try {
-      // Backend-Anbindung folgt in Phase 4. Platzhalter für reines Frontend.
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setMessage({ type: "success", text: "Bestätigungs-E-Mail gesendet!" });
-    } catch {
-      setMessage({ type: "error", text: "Etwas ist schiefgelaufen." });
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   return (
@@ -58,8 +44,6 @@ export function ProductSection() {
             isOpen={openSlug !== null}
             onClose={() => setOpenSlug(null)}
             productSlug={openSlug}
-            onSubmit={handleSubmit}
-            isSubmitting={submitting}
             message={message}
           />
         )}

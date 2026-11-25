@@ -7,28 +7,67 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type WaitlistFormProps = {
   productSlug: string;
-  onSubmit: (email: string) => void | Promise<void>;
   isSubmitting?: boolean;
   message?: { type: "success" | "error"; text: string } | null;
 };
 
 export function WaitlistForm({
   productSlug,
-  onSubmit,
   isSubmitting = false,
   message,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
+  const [localMessage, setLocalMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const displayMessage = message || localMessage;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim().toLowerCase();
     if (!trimmed) return;
-    await onSubmit(trimmed);
+
+    setLocalMessage(null);
+
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmed,
+          productSlug,
+          restockRound: 1,
+          consent: true,
+          honeypot: "",
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setLocalMessage({
+          type: "error",
+          text: data.message || "Etwas ist schiefgelaufen.",
+        });
+        return;
+      }
+
+      setLocalMessage({
+        type: "success",
+        text: data.message || "Bestätigungs-E-Mail gesendet!",
+      });
+    } catch {
+      setLocalMessage({
+        type: "error",
+        text: "Die Verbindung zum Backend konnte nicht hergestellt werden.",
+      });
+    }
   };
 
-  if (message?.type === "success") {
+  if (displayMessage?.type === "success") {
     return (
       <div className="flex flex-col items-center gap-4 text-center p-6 rounded-3xl bg-blush-light border border-blush">
         <ShieldCheck className="w-10 h-10 text-cocoa" />
@@ -44,6 +83,7 @@ export function WaitlistForm({
           onClick={() => {
             setEmail("");
             setConsent(false);
+            setLocalMessage(null);
           }}
         >
           Noch einmal eintragen
@@ -101,8 +141,8 @@ export function WaitlistForm({
         </label>
       </div>
 
-      {message?.type === "error" && (
-        <p className="text-sm text-pink">{message.text}</p>
+      {displayMessage?.type === "error" && (
+        <p className="text-sm text-pink">{displayMessage.text}</p>
       )}
 
       <Button

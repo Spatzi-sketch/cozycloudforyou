@@ -5,7 +5,6 @@ type WaitlistModalProps = {
   isOpen: boolean;
   onClose: () => void;
   productSlug: string;
-  onSubmit: (email: string) => void | Promise<void>;
   isSubmitting?: boolean;
   message?: { type: "success" | "error"; text: string } | null;
 };
@@ -14,7 +13,6 @@ export function WaitlistModal({
   isOpen,
   onClose,
   productSlug,
-  onSubmit,
   isSubmitting,
   message,
 }: WaitlistModalProps) {
@@ -26,7 +24,6 @@ export function WaitlistModal({
     >
       <WaitlistForm
         productSlug={productSlug}
-        onSubmit={onSubmit}
         isSubmitting={isSubmitting}
         message={message}
       />
