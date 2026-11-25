@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-blush: #f7c9d8;
+  --color-blush-light: #fff5f8;
+  --color-cream: #fffdf8;
+  --color-pink: #f4afc6;
+  --color-lavender: #e8ddf7;
+  --color-cocoa: #55434a;
+
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  --animate-float-slow: float 7s ease-in-out infinite;
+  --animate-float-slower: float 10s ease-in-out infinite;
+  --animate-drift: drift 12s linear infinite;
+  --animate-twinkle: twinkle 3.5s ease-in-out infinite;
+  --animate-wiggle: wiggle 2.4s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-120px) translateX(24px) rotate(20deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      transform: scale(0.7) rotate(0deg);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.15) rotate(25deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-cocoa);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
