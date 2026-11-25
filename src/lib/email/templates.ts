@@ -1,6 +1,6 @@
 export type EmailTemplateVars = {
-  confirmUrl: string;
-  email: string;
+  confirmUrl?: string;
+  email?: string;
   productName: string;
   restockUrl?: string;
   unsubscribeUrl?: string;
